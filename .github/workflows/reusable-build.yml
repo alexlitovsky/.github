@@ -6,6 +6,10 @@ on:
       mvn-goal:
         required: true
         type: string
+      sign:
+        required: false
+        type: boolean
+        default: false
 
 jobs:
   build:
@@ -30,8 +34,15 @@ jobs:
           curl -sL https://raw.githubusercontent.com/alexlitovsky/.github/main/maven/settings.xml \
             -o ~/.m2/settings.xml
 
+      - name: Import GPG key
+        if: inputs.sign
+        run: echo "${{ secrets.GPG_PRIVATE_KEY }}" | gpg --import --batch
+
       - name: Run Maven
-        run: mvn ${{ inputs.mvn-goal }}
+        run: mvn ${{ inputs.mvn-goal }}${{ inputs.sign && ' -Psign -Dgpg.passphrase=${GPG_PASSPHRASE}' || '' }}
         env:
           MAVEN_USERNAME: ${{ github.actor }}
           MAVEN_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          CENTRAL_USERNAME: ${{ secrets.CENTRAL_USERNAME }}
+          CENTRAL_TOKEN: ${{ secrets.CENTRAL_TOKEN }}
+          GPG_PASSPHRASE: ${{ secrets.GPG_PASSPHRASE }}
