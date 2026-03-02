@@ -7,6 +7,11 @@
       <username>${env.MAVEN_USERNAME}</username>
       <password>${env.MAVEN_TOKEN}</password>
     </server>
+    <server>
+      <id>central</id>
+      <username>${env.CENTRAL_USERNAME}</username>
+      <password>${env.CENTRAL_TOKEN}</password>
+    </server>
   </servers>
   <profiles>
     <profile>
