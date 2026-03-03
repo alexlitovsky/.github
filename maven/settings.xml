@@ -31,7 +31,4 @@
       </repositories>
     </profile>
   </profiles>
-  <activeProfiles>
-    <activeProfile>github-packages</activeProfile>
-  </activeProfiles>
 </settings>
